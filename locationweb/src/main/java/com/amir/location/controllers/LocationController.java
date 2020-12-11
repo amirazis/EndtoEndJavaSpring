@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.amir.location.entities.Location;
 import com.amir.location.service.LocationService;
+import com.amir.location.util.EmailUtil;
 
 @Controller
 public class LocationController {
@@ -19,6 +20,9 @@ public class LocationController {
 	@Autowired
 	LocationService service;
 
+	@Autowired
+	EmailUtil emailUtil;
+	
 	@RequestMapping("/showCreate")
 	public String showCreate() {
 		return "createLocation";
@@ -29,6 +33,8 @@ public class LocationController {
 		Location locationSaved = service.saveLocation(location);
 		String msg = "Location saved with id:" + locationSaved.getId();
 		modelMap.addAttribute("msg", msg);
+		emailUtil.sendEmail("amirazis.ace@gmail.com", "Location Saved", "Successfully send mail with created location.");
+		//emailUtil.sendEmail(toAddress, subject, body);
 		return "createLocation";
 	}
 	
